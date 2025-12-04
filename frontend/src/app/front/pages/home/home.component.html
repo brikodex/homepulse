@@ -1,0 +1,61 @@
+<!-- Hero Section -->
+<app-hero-slider></app-hero-slider>
+
+<!-- Brand Slider -->
+<app-brand-slider></app-brand-slider>
+
+<!-- Featured Products -->
+<section class="py-16 bg-background">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-end mb-12">
+      <div>
+        <h2 class="text-3xl font-bold text-primary mb-2">Featured Products</h2>
+        <p class="text-gray-500">Handpicked selections for your modern home.</p>
+      </div>
+      <a routerLink="/products" class="hidden md:flex items-center text-secondary font-semibold hover:text-blue-700 transition-colors">
+        View All <span class="material-icons ml-1 text-sm">arrow_forward</span>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div *ngFor="let product of products" class="h-full">
+        <app-product-card [product]="product"></app-product-card>
+      </div>
+    </div>
+    
+    <div class="mt-12 text-center md:hidden">
+      <a routerLink="/products" class="inline-flex items-center text-secondary font-semibold hover:text-blue-700 transition-colors">
+        View All <span class="material-icons ml-1 text-sm">arrow_forward</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Features / Trust Indicators -->
+<section class="py-16 bg-white border-t border-gray-100">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+      <div class="p-6">
+        <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 text-secondary">
+          <span class="material-icons text-3xl">local_shipping</span>
+        </div>
+        <h3 class="text-xl font-bold text-primary mb-2">Free Shipping</h3>
+        <p class="text-gray-500">On all orders over $500. Fast and secure delivery to your doorstep.</p>
+      </div>
+      <div class="p-6">
+        <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 text-secondary">
+          <span class="material-icons text-3xl">verified_user</span>
+        </div>
+        <h3 class="text-xl font-bold text-primary mb-2">2 Year Warranty</h3>
+        <p class="text-gray-500">Peace of mind with our comprehensive warranty on all appliances.</p>
+      </div>
+      <div class="p-6">
+        <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 text-secondary">
+          <span class="material-icons text-3xl">headset_mic</span>
+        </div>
+        <h3 class="text-xl font-bold text-primary mb-2">24/7 Support</h3>
+        <p class="text-gray-500">Expert assistance whenever you need it. We're here to help.</p>
+      </div>
+    </div>
+  </div>
+</section>

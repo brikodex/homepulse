@@ -1,0 +1,134 @@
+<div class="bg-background min-h-screen py-12" *ngIf="product">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Breadcrumb (Mock) -->
+    <nav class="text-sm mb-8 text-gray-500">
+      <a routerLink="/" class="hover:text-secondary">Home</a> <span class="mx-2">/</span>
+      <a routerLink="/products" class="hover:text-secondary">Products</a> <span class="mx-2">/</span>
+      <span class="text-primary font-medium">{{product.name}}</span>
+    </nav>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-0">
+        <!-- Image Gallery -->
+        <div class="p-8 bg-gray-50 flex items-center justify-center">
+          <img [src]="product.images" [alt]="product.name" class="max-w-full max-h-[500px] object-contain hover:scale-105 transition-transform duration-500">
+        </div>
+
+        <!-- Product Info -->
+        <div class="p-8 lg:p-12 flex flex-col">
+          <div class="mb-auto">
+            <h1 class="text-3xl md:text-4xl font-bold text-primary mb-4">{{product.name}}</h1>
+            
+            <div class="flex items-center gap-4 mb-6">
+              <div class="flex text-yellow-400">
+                <span class="material-icons">star</span>
+                <span class="material-icons">star</span>
+                <span class="material-icons">star</span>
+                <span class="material-icons">star</span>
+                <span class="material-icons">star_half</span>
+              </div>
+              <span class="text-gray-500 text-sm">(128 reviews)</span>
+              <span class="text-gray-300">|</span>
+              <span class="text-green-600 font-medium text-sm flex items-center gap-1">
+                <span class="material-icons text-sm">check_circle</span> In Stock
+              </span>
+            </div>
+
+            <div class="text-3xl font-bold text-secondary mb-8">
+              ${{product.price}}
+            </div>
+
+            <p class="text-gray-600 leading-relaxed mb-8">
+              {{product.description}}
+            </p>
+
+            <!-- Actions -->
+            <div class="flex flex-col sm:flex-row gap-4 mb-8">
+              <div class="flex items-center border border-gray-300 rounded-lg w-max">
+                <button class="px-4 py-2 text-gray-600 hover:bg-gray-100" (click)="quantity = quantity > 1 ? quantity - 1 : 1">-</button>
+                <input type="number" [(ngModel)]="quantity" class="w-16 text-center border-none focus:ring-0" min="1">
+                <button class="px-4 py-2 text-gray-600 hover:bg-gray-100" (click)="quantity = quantity + 1">+</button>
+              </div>
+              <button (click)="addToCart()" class="flex-1 px-8 py-3 bg-primary text-white rounded-lg font-bold hover:bg-secondary transition-colors shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+                <span class="material-icons">shopping_cart</span> Add to Cart
+              </button>
+              <button class="p-3 border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-600 transition-colors">
+                <span class="material-icons">favorite_border</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Trust Badges -->
+          <div class="grid grid-cols-3 gap-4 pt-8 border-t border-gray-100">
+            <div class="text-center">
+              <span class="material-icons text-secondary mb-2">local_shipping</span>
+              <p class="text-xs text-gray-500 font-medium">Free Shipping</p>
+            </div>
+            <div class="text-center">
+              <span class="material-icons text-secondary mb-2">verified</span>
+              <p class="text-xs text-gray-500 font-medium">2 Year Warranty</p>
+            </div>
+            <div class="text-center">
+              <span class="material-icons text-secondary mb-2">refresh</span>
+              <p class="text-xs text-gray-500 font-medium">30 Day Returns</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="border-t border-gray-100">
+        <div class="flex border-b border-gray-100">
+          <button (click)="setActiveTab('description')" 
+                  [class.border-b-2]="activeTab === 'description'"
+                  [class.border-secondary]="activeTab === 'description'"
+                  [class.text-secondary]="activeTab === 'description'"
+                  class="px-8 py-4 text-sm font-bold text-gray-600 hover:text-secondary transition-colors">
+            Description
+          </button>
+          <button (click)="setActiveTab('specs')" 
+                  [class.border-b-2]="activeTab === 'specs'"
+                  [class.border-secondary]="activeTab === 'specs'"
+                  [class.text-secondary]="activeTab === 'specs'"
+                  class="px-8 py-4 text-sm font-bold text-gray-600 hover:text-secondary transition-colors">
+            Specifications
+          </button>
+          <button (click)="setActiveTab('reviews')" 
+                  [class.border-b-2]="activeTab === 'reviews'"
+                  [class.border-secondary]="activeTab === 'reviews'"
+                  [class.text-secondary]="activeTab === 'reviews'"
+                  class="px-8 py-4 text-sm font-bold text-gray-600 hover:text-secondary transition-colors">
+            Reviews
+          </button>
+        </div>
+        <div class="p-8 bg-gray-50/50">
+          <div *ngIf="activeTab === 'description'" class="prose max-w-none text-gray-600">
+            <p>{{product.description}}</p>
+            <p class="mt-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          </div>
+          <div *ngIf="activeTab === 'specs'">
+            <table class="w-full max-w-2xl text-sm text-left text-gray-500">
+              <tbody>
+                <tr class="border-b border-gray-200">
+                  <th class="py-4 font-medium text-primary">Brand</th>
+                  <td class="py-4">HomePulse Premium</td>
+                </tr>
+                <tr class="border-b border-gray-200">
+                  <th class="py-4 font-medium text-primary">Model</th>
+                  <td class="py-4">HP-2025-X</td>
+                </tr>
+                <tr class="border-b border-gray-200">
+                  <th class="py-4 font-medium text-primary">Energy Rating</th>
+                  <td class="py-4">A+++</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div *ngIf="activeTab === 'reviews'" class="text-center py-8">
+            <p class="text-gray-500">No reviews yet. Be the first to review!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,66 @@
+<div class="bg-background min-h-screen py-8">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+      <h1 class="text-3xl font-bold text-primary mb-4 md:mb-0">All Products</h1>
+      <div class="flex items-center gap-4">
+        <span class="text-gray-600">Sort by:</span>
+        <select (change)="onSortChange($event)" class="bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-lg focus:outline-none focus:border-secondary">
+          <option value="newest">Newest Arrivals</option>
+          <option value="low-high">Price: Low to High</option>
+          <option value="high-low">Price: High to Low</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-8">
+      <!-- Sidebar Filters -->
+      <aside class="w-full lg:w-1/4">
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 sticky top-24">
+          <h3 class="text-lg font-bold text-primary mb-4">Filters</h3>
+          
+          <!-- Categories -->
+          <div class="mb-6">
+            <h4 class="text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wider">Categories</h4>
+            <ul class="space-y-2">
+              <li *ngFor="let cat of categories">
+                <button (click)="onCategoryChange(cat)" 
+                        [class.text-secondary]="selectedCategory === cat"
+                        [class.font-bold]="selectedCategory === cat"
+                        class="text-gray-600 hover:text-secondary transition-colors w-full text-left">
+                  {{cat}}
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Price Range -->
+          <div>
+            <h4 class="text-sm font-semibold text-gray-600 mb-3 uppercase tracking-wider">Price Range</h4>
+            <input type="range" min="0" max="5000" step="100" [(ngModel)]="priceRange" (change)="onPriceChange()" class="w-full accent-secondary">
+            <div class="flex justify-between text-sm text-gray-500 mt-2">
+              <span>$0</span>
+              <span>${{priceRange}}</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Product Grid -->
+      <main class="w-full lg:w-3/4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div *ngFor="let product of filteredProducts">
+            <app-product-card [product]="product"></app-product-card>
+          </div>
+        </div>
+        
+        <!-- Empty State -->
+        <div *ngIf="filteredProducts.length === 0" class="text-center py-12">
+          <span class="material-icons text-6xl text-gray-300 mb-4">search_off</span>
+          <h3 class="text-xl font-bold text-gray-600">No products found</h3>
+          <p class="text-gray-500">Try adjusting your filters.</p>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>

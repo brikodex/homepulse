@@ -1,0 +1,46 @@
+<header class="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm transition-all duration-300">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <div class="flex-shrink-0 mr-8">
+        <a routerLink="/" class="flex items-center gap-2 group">
+          <span class="material-icons text-secondary text-3xl group-hover:scale-110 transition-transform duration-300">home_work</span>
+          <span class="font-bold text-xl tracking-tight text-primary group-hover:text-secondary transition-colors">HomePulse</span>
+        </a>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="hidden lg:flex flex-1 max-w-lg mx-8">
+        <div class="relative w-full">
+          <input type="text" placeholder="Search for products..." class="w-full pl-10 pr-4 py-2 rounded-full border border-gray-200 focus:border-secondary focus:ring-2 focus:ring-secondary/20 focus:outline-none transition-all duration-300 bg-gray-50 hover:bg-white text-sm">
+          <span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">search</span>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex space-x-6">
+        <a routerLink="/" routerLinkActive="text-secondary font-semibold" [routerLinkActiveOptions]="{exact: true}" class="text-gray-600 hover:text-secondary transition-colors duration-200 text-sm uppercase tracking-wide font-medium">Home</a>
+        <a routerLink="/products" routerLinkActive="text-secondary font-semibold" class="text-gray-600 hover:text-secondary transition-colors duration-200 text-sm uppercase tracking-wide font-medium">Products</a>
+        <a routerLink="/admin/products" routerLinkActive="text-secondary font-semibold" class="text-gray-600 hover:text-secondary transition-colors duration-200 text-sm uppercase tracking-wide font-medium">Admin</a>
+      </nav>
+
+      <!-- Icons / Actions -->
+      <div class="flex items-center space-x-4">
+        <a routerLink="/cart" class="relative p-2 text-gray-600 hover:text-secondary transition-colors duration-200 group">
+          <span class="material-icons">shopping_cart</span>
+          <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/4 -translate-y-1/4 bg-accent rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">0</span>
+        </a>
+        
+        <div class="hidden md:flex items-center space-x-3 border-l border-gray-200 pl-4">
+          <a routerLink="/login" class="text-sm font-medium text-gray-600 hover:text-primary transition-colors">Log In</a>
+          <a routerLink="/register" class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-full hover:bg-secondary transition-colors duration-300 shadow-md hover:shadow-lg">Sign Up</a>
+        </div>
+
+        <!-- Mobile Menu Button (Placeholder for now) -->
+        <button class="md:hidden p-2 rounded-md text-gray-600 hover:text-secondary focus:outline-none">
+          <span class="material-icons">menu</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>

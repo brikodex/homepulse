@@ -1,0 +1,46 @@
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+  <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+    <h2 class="text-xl font-bold text-gray-800">Products</h2>
+    <button (click)="addProduct()" class="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-secondary transition-colors flex items-center gap-2">
+      <span class="material-icons">add</span> Add Product
+    </button>
+  </div>
+  
+  <div class="overflow-x-auto">
+    <table class="w-full text-left text-sm text-gray-600">
+      <thead class="bg-gray-50 text-xs uppercase font-medium text-gray-500">
+        <tr>
+          <th class="px-6 py-4">Image</th>
+          <th class="px-6 py-4">Name</th>
+          <th class="px-6 py-4">Category</th>
+          <th class="px-6 py-4">Price</th>
+          <th class="px-6 py-4">Stock</th>
+          <th class="px-6 py-4 text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <tr *ngFor="let product of products" class="hover:bg-gray-50 transition-colors">
+          <td class="px-6 py-4">
+            <img [src]="product.images" [alt]="product.name" class="w-12 h-12 object-cover rounded-lg bg-gray-100">
+          </td>
+          <td class="px-6 py-4 font-medium text-gray-900">{{product.name}}</td>
+          <td class="px-6 py-4">Appliances</td> <!-- Mock category -->
+          <td class="px-6 py-4 font-medium">{{product.price | currency}}</td>
+          <td class="px-6 py-4">
+            <span class="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600">In Stock</span>
+          </td>
+          <td class="px-6 py-4 text-right">
+            <div class="flex justify-end gap-2">
+              <button (click)="editProduct(product.id)" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Edit">
+                <span class="material-icons text-sm">edit</span>
+              </button>
+              <button (click)="deleteProduct(product.id)" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Delete">
+                <span class="material-icons text-sm">delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
