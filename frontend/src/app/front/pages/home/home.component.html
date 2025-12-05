@@ -1,9 +1,7 @@
 <!-- Hero Section -->
 <app-hero-slider></app-hero-slider>
-
 <!-- Brand Slider -->
 <app-brand-slider></app-brand-slider>
-
 <!-- Featured Products -->
 <section class="py-16 bg-background">
   <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,11 +14,12 @@
         View All <span class="material-icons ml-1 text-sm">arrow_forward</span>
       </a>
     </div>
-
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-      <div *ngFor="let product of products" class="h-full">
-        <app-product-card [product]="product"></app-product-card>
-      </div>
+      @for (product of products(); track product.id) {
+        <div class="h-full">
+          <app-product-card [product]="product"></app-product-card>
+        </div>
+      }
     </div>
     
     <div class="mt-12 text-center md:hidden">
@@ -30,7 +29,6 @@
     </div>
   </div>
 </section>
-
 <!-- Features / Trust Indicators -->
 <section class="py-16 bg-white border-t border-gray-100">
   <div class="container mx-auto px-4 sm:px-6 lg:px-8">
