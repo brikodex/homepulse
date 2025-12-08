@@ -1,4 +1,4 @@
-package src.main.java.com.homepulse.controller;
+package com.homepulse.controller;
 
 public class ImageController {
 }

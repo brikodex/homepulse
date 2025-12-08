@@ -1,4 +1,4 @@
-package src.main.java.com.homepulse.service;
+package com.homepulse.service;
 
 public class ImageServiceImpl {
 }
