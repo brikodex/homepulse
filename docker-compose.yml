@@ -1,0 +1,63 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: homepulse-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: homepulse
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: homepulse-backend
+    restart: always
+    environment:
+      DATASOURCE_URL: jdbc:mysql://db:3306/homepulse
+      DATASOURCE_USERNAME: root
+      DATASOURCE_PASSWORD: password
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: homepulse-frontend
+    restart: always
+    networks:
+      - app-network
+
+  gateway:
+    image: nginx:alpine
+    container_name: homepulse-gateway
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db_data:

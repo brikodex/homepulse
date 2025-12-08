@@ -33,7 +33,6 @@ public class ProductController {
         return productService.getDetail(id);
     }
 
-
     @DELETE
     @Path("/{id}")
     public boolean deleteProduct(@PathParam("id") Long id) {

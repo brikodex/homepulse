@@ -3,7 +3,6 @@ package com.homepulse.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
 import java.time.Instant;
 
 @Entity
@@ -44,11 +43,11 @@ public class Image {
         this.id = id;
     }
 
-    public com.homepulse.model.Product getProduct() {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProduct(com.homepulse.model.Product product) {
+    public void setProduct(Product product) {
         this.product = product;
     }
 
