@@ -27,8 +27,8 @@ COPY --from=build /app/target/backend-1.0.0.war /opt/jboss/wildfly/standalone/de
 # But for Docker, we want to Put it as a module.
 # Let's simple curl it in this stage to be safe and explicit.
 USER root
-RUN curl -L -o /opt/jboss/wildfly/custom/mysql-connector-j.jar https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.3.0/mysql-connector-j-8.3.0.jar
 RUN mkdir -p /opt/jboss/wildfly/custom
+RUN curl -L -o /opt/jboss/wildfly/custom/mysql-connector-j.jar https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.3.0/mysql-connector-j-8.3.0.jar
 
 # Copy configuration script
 COPY setup-datasource.cli /opt/jboss/wildfly/custom/
