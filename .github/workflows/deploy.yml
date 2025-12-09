@@ -54,7 +54,7 @@ jobs:
           tags: ghcr.io/${{ github.repository }}/frontend:latest
 
   # Déploiement (attend que les deux builds soient finis)
-  deploy to azure vm:
+  deploy-to-azure-vm:
     runs-on: ubuntu-latest
     needs: [build-backend, build-frontend]
 
