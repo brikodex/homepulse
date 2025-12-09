@@ -1,17 +1,21 @@
+version: '3.8'
+
 services:
   db:
     image: mysql:8.0
     container_name: homepulse-db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: homepulse
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
     networks:
       - app-network
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
 
@@ -22,9 +26,9 @@ services:
     container_name: homepulse-backend
     restart: always
     environment:
-      DATASOURCE_URL: jdbc:mysql://db:3306/homepulse
-      DATASOURCE_USERNAME: root
-      DATASOURCE_PASSWORD: password
+      DATASOURCE_URL: jdbc:mysql://db:3306/${MYSQL_DATABASE}
+      DATASOURCE_USERNAME: ${MYSQL_USER}
+      DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
     depends_on:
       db:
         condition: service_healthy
