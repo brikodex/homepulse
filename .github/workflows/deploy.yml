@@ -1,4 +1,4 @@
-name: Deploy HomePulse to Azure VM
+name: Deploy HomePulse
 
 on:
   push:
@@ -44,7 +44,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Deploy to VM
+      - name: Deploy to Azure VM
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.AZUR_VM_IP }}
