@@ -91,5 +91,6 @@ jobs:
             export MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
 
             # Pull et redémarrage
-            docker-compose pull
-            docker-compose up -d --remove-orphans
+            docker compose pull
+            docker compose down --remove-orphans
+            docker compose up -d
