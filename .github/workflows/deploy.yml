@@ -60,7 +60,8 @@ jobs:
         with:
           host: ${{ secrets.AZURE_VM_IP }}
           username: ${{ secrets.AZURE_VM_USER }}
-          key: ${{ secrets.AZURE_VM_KEY }}
+          port: ${{ secrets.AZURE_VM_SSH_PORT }}
+          key: ${{ secrets.AZURE_VM_SSH_KEY }}
           script: |
             cd /home/${{ secrets.AZURE_VM_USER }}/homepulse
             
