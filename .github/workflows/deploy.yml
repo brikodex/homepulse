@@ -1,12 +1,8 @@
-name: Deploy to Azure VM
+name: Deploy HomePulse to Azure VM
 
 on:
   push:
-    branches: [ "master", "main" ]
-
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+    branches: [ "main", "master" ]
 
 jobs:
   build-and-push:
@@ -19,10 +15,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Log in to the Container registry
+      - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.REGISTRY }}
+          registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
@@ -31,74 +27,45 @@ jobs:
         with:
           context: ./backend
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/backend:latest
+          tags: ghcr.io/${{ github.repository }}/backend:latest
 
       - name: Build and push Frontend
         uses: docker/build-push-action@v5
         with:
           context: ./frontend
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/frontend:latest
-  
+          tags: ghcr.io/${{ github.repository }}/frontend:latest
+
   deploy:
     runs-on: ubuntu-latest
     needs: build-and-push
-    
-    steps:
-      - name: Checkout for docker-compose.yml
-        uses: actions/checkout@v4
-      
-      - name: Copy docker-compose and nginx config to VM
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.AZURE_VM_IP }}
-          username: ${{ secrets.AZURE_VM_USER }}
-          key: ${{ secrets.AZURE_VM_KEY }}
-          source: "docker-compose.yml,nginx/nginx.conf,deployment/generate-certs.sh"
-          target: "/home/${{ secrets.AZURE_VM_USER }}/homepulse"
 
-      - name: Deploy on VM
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to VM
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.AZURE_VM_IP }}
-          username: ${{ secrets.AZURE_VM_USER }}
-          key: ${{ secrets.AZURE_VM_KEY }}
+          host: ${{ secrets.AZUR_VM_IP }}
+          username: ${{ secrets.AZUR_VM_USER }}
+          key: ${{ secrets.AZUR_VM_KEY }}
           script: |
-            cd /home/${{ secrets.AZURE_VM_USER }}/homepulse
-            
-            # Login to GHCR (might need PAT if repository is private)
-            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            
-            # Generate certs if not exist (quick fix for initial run)
-            chmod +x deployment/generate-certs.sh
-            [ ! -f nginx/certs/fullchain.pem ] && ./deployment/generate-certs.sh
+            # Se placer dans le dossier de déploiement
+            mkdir -p /home/${{ secrets.AZUR_VM_USER }}/homepulse
+            cd /home/${{ secrets.AZUR_VM_USER }}/homepulse
+
+            # Copier le docker-compose.yml depuis le repo
+            cp -r $GITHUB_WORKSPACE/docker-compose.yml .
+
+            # Exporter les secrets MySQL
+            export MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}
+            export MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}
+            export MYSQL_USER=${{ secrets.MYSQL_USER }}
+            export MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
 
             # Pull latest images
             docker-compose pull
-            
-            # Update image names to point to GHCR in docker-compose is tricky if it's dynamic.
-            # Easiest way for this simple setup: 
-            # Override entries with environment variables or let docker-compose build locally? No, we want to pull.
-            # We need to ensure docker-compose uses the `image:` property pointing to GHCR.
-            
-            # Re-creating docker-compose override or export vars
-            export BACKEND_IMAGE=ghcr.io/${{ github.repository }}/backend:latest
-            export FRONTEND_IMAGE=ghcr.io/${{ github.repository }}/frontend:latest
-            
-            # NOTE: The docker-compose.yml I created uses `build:`. 
-            # To use pre-built images, we should use `image:` override.
-            # Let's create a docker-compose.prod.yml override on the fly or just use `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d`
-            
-            cat <<EOF > docker-compose.prod.yml
-            services:
-              backend:
-                build:
-                  context: . # Invalid, disable build
-                image: ghcr.io/${{ github.repository }}/backend:latest
-              frontend:
-                build:
-                  context: . 
-                image: ghcr.io/${{ github.repository }}/frontend:latest
-            EOF
-            
-            docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --remove-orphans
+
+            # Lancer tous les conteneurs
+            docker-compose up -d --remove-orphans
