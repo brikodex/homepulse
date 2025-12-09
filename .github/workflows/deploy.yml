@@ -1,4 +1,4 @@
-name: Deploy HomePulse
+name: Deploy HomePulse to Azure VM
 
 on:
   push:
