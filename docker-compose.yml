@@ -1,65 +1,70 @@
 services:
-  db:
+  mysql:
     image: mysql:8.0
-    container_name: homepulse-db
+    container_name: homepulse_mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
     volumes:
-      - db_data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
     networks:
       - app-network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       timeout: 20s
       retries: 10
 
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: homepulse-backend
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: homepulse_phpmyadmin
     restart: always
     environment:
-      DATASOURCE_URL: jdbc:mysql://db:3306/${MYSQL_DATABASE}
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "8080:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  backend:
+    image: ghcr.io/brikodex/homepulse/backend:latest
+    container_name: homepulse_backend
+    restart: always
+    environment:
+      DATASOURCE_URL: "jdbc:mysql://mysql:3306/${MYSQL_DATABASE}"
       DATASOURCE_USERNAME: ${MYSQL_USER}
       DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "8081:8080"
     depends_on:
-      db:
+      mysql:
         condition: service_healthy
     networks:
       - app-network
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: homepulse-frontend
+    image: ghcr.io/brikodex/homepulse/frontend:latest
+    container_name: homepulse_frontend
     restart: always
-    networks:
-      - app-network
-
-  gateway:
-    image: nginx:alpine
-    container_name: homepulse-gateway
     ports:
       - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/certs:/etc/nginx/certs:ro
     depends_on:
-      - frontend
       - backend
     networks:
       - app-network
 
+volumes:
+  mysql_data:
+
+
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  db_data:
