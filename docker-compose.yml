@@ -8,17 +8,16 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    ports:
-      - "3306:3306"
+      MYSQL_ROOT_HOST: "%"
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
       - app-network
     healthcheck:
-      test: "mysqladmin ping -h localhost -u root -p\"$$MYSQL_ROOT_PASSWORD\""
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}" ]
       interval: 10s
       timeout: 10s
-      retries: 5
+      retries: 10
       start_period: 60s
 
   phpmyadmin:
