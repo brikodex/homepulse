@@ -9,6 +9,7 @@ module add --name=com.mysql --resources=/opt/jboss/wildfly/custom/mysql-connecto
 /subsystem=datasources/jdbc-driver=mysql:add(driver-name=mysql,driver-module-name=com.mysql,driver-class-name=com.mysql.cj.jdbc.Driver)
 
 # Add Datasource
-data-source add --name=HomePulseDS --jndi-name=java:/HomePulseDS --driver-name=mysql --connection-url=${env.DATASOURCE_URL} --user-name=${env.DATASOURCE_USERNAME} --password=${env.DATASOURCE_PASSWORD} --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker --validate-on-match=true --background-validation=false --exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter
+/subsystem=datasources/data-source=HomePulseDS:add(enabled=true, jndi-name=java:/jdbc/homepulseDS, driver-name=mysql, connection-url="jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME}?useSSL=false&allowPublicKeyRetrieval=true", user-name="${DB_USER}", password="${DB_PASSWORD}", max-pool-size=20)
 
 stop-embedded-server
+
