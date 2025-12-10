@@ -15,7 +15,7 @@ RUN mvn clean package -DskipTests
 # =========================
 # Stage 2: Runtime WildFly
 # =========================
-FROM quay.io/wildfly/wildfly:36.0.0.Final-jdk21
+FROM quay.io/wildfly/wildfly:36.0.0.Final
 
 USER root
 

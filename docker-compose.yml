@@ -44,7 +44,9 @@ services:
       DATASOURCE_USERNAME: ${MYSQL_USER}
       DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "8081:8080"
+      # Expose Management Console (ensure strict security!)
+      - "9990:9990"
+      # App port 8080 is now internal only (via gateway)
     depends_on:
       mysql:
         condition: service_healthy
@@ -55,9 +57,21 @@ services:
     image: ghcr.io/brikodex/homepulse/frontend:latest
     container_name: homepulse_frontend
     restart: always
+    # Port 80 is now internal only (via gateway)
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  gateway:
+    image: ghcr.io/brikodex/homepulse/gateway:latest
+    container_name: homepulse_gateway
+    restart: always
     ports:
       - "80:80"
+      - "443:443"
     depends_on:
+      - frontend
       - backend
     networks:
       - app-network
