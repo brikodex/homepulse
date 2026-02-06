@@ -1,0 +1,123 @@
+.footer-shell {
+  position: relative;
+  background: linear-gradient(140deg, #0f172a 0%, #111827 45%, #0b1120 100%);
+  color: #ffffff;
+  padding: 4.5rem 0 3rem;
+  overflow: hidden;
+}
+
+.footer-glow {
+  position: absolute;
+  inset: -20% -10% auto;
+  height: 70%;
+  background: radial-gradient(circle at top, rgba(59, 130, 246, 0.25), transparent 60%),
+    radial-gradient(circle at 30% 40%, rgba(14, 165, 233, 0.18), transparent 55%);
+  filter: blur(30px);
+  animation: footerPulse 12s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.footer-content {
+  position: relative;
+  z-index: 1;
+}
+
+.footer-link {
+  color: rgba(226, 232, 240, 0.7);
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover,
+.footer-link:focus-visible {
+  color: #ffffff;
+}
+
+.footer-input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  color: #e2e8f0;
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.footer-input:focus-visible {
+  outline: none;
+  border-color: rgba(59, 130, 246, 0.7);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.footer-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.footer-button:hover,
+.footer-button:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.35);
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
+  padding-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .footer-bottom {
+    flex-direction: row;
+  }
+}
+
+.footer-social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  color: #e2e8f0;
+  transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.footer-social:hover,
+.footer-social:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(59, 130, 246, 0.7);
+  color: #ffffff;
+}
+
+@keyframes footerPulse {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-glow {
+    animation: none;
+  }
+
+  .footer-button,
+  .footer-social {
+    transition: none;
+  }
+}
